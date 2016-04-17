@@ -29,8 +29,7 @@ var app = express();
 
 
 app.get('/', function(req, res){
-	res.send('Hello World!');
-   // res.render('/index.html');
+   res.render('index');
 });
 function getNewRoom(){
 	//need to return the starting state of a room
