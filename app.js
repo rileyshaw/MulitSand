@@ -7,11 +7,10 @@
 // This application uses express as its web server
 // for more info, see: http://expressjs.com
 var express = require('express');
-var io = require
 var cfenv = require('cfenv');
 var app = express();
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
+//var io = require('socket.io')(http);
 
 
 
@@ -22,9 +21,11 @@ var io = require('socket.io')(http);
 //listen for a 'broadcast_message' for new messages in the current room
 //listen for a 'broadcast_action' for a new action from another client
 //listen for a 'broadcast_update' for a server version of the room state
-var redis = require('redis');
-var redisclient = redis.createClient();
-var uuid = require('node-uuid');
+
+
+//var redis = require('redis');
+//var redisclient = redis.createClient();
+//var uuid = require('node-uuid');
 
 
 app.get('/', function(req, res){
@@ -38,10 +39,11 @@ function getNewRoom(){
 function initRoom(roomID){
 	
 	var data = getNewRoom();
-	redisclient.hmset(roomID,{'data': data,'numofplayers':0});
+	//redisclient.hmset(roomID,{'data': data,'numofplayers':0});
+	
 	//initialze redis information for the room
 }
-
+/*
 io.sockets.on('connection', function(socket) {
 	
   //request to join a room
@@ -99,4 +101,4 @@ io.sockets.on('connection', function(socket) {
   });
   
   
-});
+});*/
