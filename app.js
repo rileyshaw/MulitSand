@@ -27,12 +27,10 @@ var app = express();
 //var redisclient = redis.createClient();
 //var uuid = require('node-uuid');
 
-app.listen(process.env.PORT, function () {
-  console.log('Example app listening on port 3000!');
-});
 
 app.get('/', function(req, res){
-    res.render('/index.html');
+	res.send('Hello World!');
+   // res.render('/index.html');
 });
 function getNewRoom(){
 	//need to return the starting state of a room
@@ -46,6 +44,11 @@ function initRoom(roomID){
 	
 	//initialze redis information for the room
 }
+
+app.listen(process.env.PORT, function () {
+  console.log('Example app listening on port 3000!');
+});
+
 /*
 io.sockets.on('connection', function(socket) {
 	
