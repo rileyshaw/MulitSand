@@ -27,6 +27,10 @@ var app = express();
 //var redisclient = redis.createClient();
 //var uuid = require('node-uuid');
 
+app.set('view engine', 'ejs');
+
+app.set('views', __dirname + '/public');
+
 
 app.get('/', function(req, res){
    res.render('index');
@@ -44,8 +48,8 @@ function initRoom(roomID){
 	//initialze redis information for the room
 }
 
-app.listen(process.env.PORT, function () {
-  console.log('Example app listening on port 3000!');
+app.listen(3000, function () {
+  console.log('Example app listening on port 3000!'  );
 });
 
 /*
