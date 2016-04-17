@@ -9,7 +9,7 @@
 var express = require('express');
 var cfenv = require('cfenv');
 var app = express();
-var http = require('http').Server(app);
+//var http = require('http').Server(app);
 //var io = require('socket.io')(http);
 
 
@@ -27,6 +27,9 @@ var http = require('http').Server(app);
 //var redisclient = redis.createClient();
 //var uuid = require('node-uuid');
 
+app.listen(process.env.PORT, function () {
+  console.log('Example app listening on port 3000!');
+});
 
 app.get('/', function(req, res){
     res.render('/index.html');
