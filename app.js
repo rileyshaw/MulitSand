@@ -9,8 +9,8 @@
 var express = require('express');
 var cfenv = require('cfenv');
 var app = express();
-//var http = require('http').Server(app);
-//var io = require('socket.io')(http);
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 
 
@@ -23,9 +23,9 @@ var app = express();
 //listen for a 'broadcast_update' for a server version of the room state
 
 
-//var redis = require('redis');
-//var redisclient = redis.createClient();
-//var uuid = require('node-uuid');
+var redis = require('redis');
+var redisclient = redis.createClient();
+var uuid = require('node-uuid');
 
 app.set('view engine', 'ejs');
 
@@ -52,7 +52,7 @@ app.listen(3000, function () {
   console.log('Example app listening on port 3000!'  );
 });
 
-/*
+
 io.sockets.on('connection', function(socket) {
 	
   //request to join a room
@@ -110,4 +110,4 @@ io.sockets.on('connection', function(socket) {
   });
   
   
-});*/
+});
