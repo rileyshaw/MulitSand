@@ -23,5 +23,12 @@
             or use the Start Coding guide under your app in your dashboard.
     </table>
   </body>
+  <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+  <script>
+    var socket = io();
+    socket.on('connection', function(){
+      console.log('user');
+   });
+  </script>
 
 </html>

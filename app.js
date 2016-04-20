@@ -48,14 +48,20 @@ function initRoom(roomID){
 	//initialze redis information for the room
 }
 
-app.listen(3000, function () {
+http.listen(3000, function () {
   console.log('Example app listening on port 3000!'  );
 });
 
 
+
+
 io.sockets.on('connection', function(socket) {
-	
-  //request to join a room
+  console.log('a user connected');
+   socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+
+   
   socket.on('join', function(channel) {
     socket.get('room', function() {
     	
