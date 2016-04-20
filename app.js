@@ -32,9 +32,11 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/public');
 
 
+app.use(express.static(__dirname + '/public'));
 app.get('/', function(req, res){
    res.render('index');
 });
+
 function getNewRoom(){
 	//need to return the starting state of a room
 	return 0;
