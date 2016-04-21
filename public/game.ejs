@@ -8,9 +8,15 @@
         <script>
             var canvas = document.getElementById('playArea');
             var context = canvas.getContext('2d');
-
+            
+            context.beginPath()
             context.rect(0, 0, 10, 10);
             context.fillStyle = 'yellow';
+            context.fill();
+
+            context.beginPath()
+            context.rect(0, 10, 10, 20);
+            context.fillStyle = 'red';
             context.fill();
         </script>
     </body>
