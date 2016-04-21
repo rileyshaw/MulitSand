@@ -12,7 +12,8 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-
+//  LESS stylesheets
+var lessMiddleware = require('less-middleware');
 
 //info for client side stuff
 //emit a 'join' with the room as a parameter to join a room
@@ -31,6 +32,11 @@ app.set('view engine', 'ejs');
 
 app.set('views', __dirname + '/public');
 
+app.use(lessMiddleware({
+  src: __dirname + "/public",
+  compress: true
+}));
+app.use(express.static(__dirname + '/public'));
 
 app.use(express.static(__dirname + '/public'));
 app.get('/', function(req, res){
