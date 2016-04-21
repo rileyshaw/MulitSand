@@ -1,16 +1,22 @@
 {
-	"name": "NodejsStarterApp",
-	"version": "0.0.1",
-    "private": true,
-	"scripts": {
-		"start": "node app.js"
-	},
-	"dependencies": {
-		"express": "4.13.x",
-		"cfenv": "1.0.x"
-	},
-	"repository": {},
-	"engines": {
-		"node": "4.2.x"
-	} 
+  "name": "multisand",
+  "version": "1.0.0",
+  "description": "Untapped sand potential",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "cfenv": "^1.0.3",
+    "ejs": "^2.4.1",
+    "express": "^4.13.4",
+    "less-middleware": "^2.1.0",
+    "node-uuid": "^1.4.7",
+    "redis": "^2.5.3",
+    "socket.io": "^1.4.5"
+  },
+  "repository": {},
+  "engines": {
+    "node": "4.2.x"
+  }
 }
