@@ -12,14 +12,12 @@
 <body>
     <h1 class="center title"><img src="images/title.png"</img></h1>
 
+    <div class="center">
+        <button class="new-room-btn" onclick="newRoom()">New Sandbox</button>
+    </div>
 
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-    <script>
-    var socket = io();
-    socket.on('connection', function(){
-        console.log('user');
-    });
-    </script>
+    <script src="js/home.js"></script>
 </body>
 
 </html>

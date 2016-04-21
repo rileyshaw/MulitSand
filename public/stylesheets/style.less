@@ -1,8 +1,46 @@
+@color-bg: #1a1a1a;
+
+@color-button-border: #999;
+@color-button-border-hover: #fff;
+@color-button-background: transparent;
+@color-button-background-hover: #263f40;
+@color-button-text: #999;
+@color-button-text-hover: #fff;
+
+@import url(https://fonts.googleapis.com/css?family=Share+Tech+Mono);
+@font-text: 'Share Tech Mono', 'Consolas', 'Arial';
+
+
+body {
+	padding-top: 50px;
+	background-color: @color-bg;
+}
 
 .center {
 	text-align: center;
 }
 
 .title {
-	
+	margin-bottom: 60px;
+}
+
+button {
+	font-family: @font-text;
+	font-size: 18px;
+	background-color: @color-button-background;
+	background-radius: 0;
+	border: 4px solid @color-button-border;
+	border-radius: 0;
+	color: @color-button-text;
+	cursor: pointer;
+	&:hover {
+		background-color: @color-button-background-hover;
+		border-color: @color-button-border-hover;
+		color: @color-button-text-hover;
+	}
+}
+
+.new-room-btn {
+	width: 240px;
+	height: 50px;
 }
