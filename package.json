@@ -10,7 +10,7 @@
     "cfenv": "^1.0.3",
     "ejs": "^2.4.1",
     "express": "^4.13.4",
-    "less-middleware": "^2.1.0",
+    "less-middleware": "^0.1.15",
     "node-uuid": "^1.4.7",
     "redis": "^2.5.3",
     "socket.io": "^1.4.5"
