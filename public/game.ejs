@@ -8,16 +8,60 @@
         <script>
             var canvas = document.getElementById('playArea');
             var context = canvas.getContext('2d');
-            
-            context.beginPath()
-            context.rect(0, 0, 10, 10);
-            context.fillStyle = 'yellow';
-            context.fill();
+            var blockSize = 5;
+			var moving = new Array();//what blocks are moving
+			var direction = -1;//changes so equally spread out along flat surface
+			
+			//block:
+			//	x: x position (int)
+			//	y: y position (int)
+			//	color: color of block
+			class Block{
+				constructor(x, y, color){
+					this.x = x;
+					this.y = y;
+					this.color = color;
+				}
+			}
+			
+			
+			//fills canvas with block at it's location with it's color
+			function setBlock(block){
+				if(block.x >= 0 && block.x<canvas.width/blockSize && block.y>=0 && block.y<canvas.height/blockSize){
+					context.beginPath()
+					context.rect(block.x * blockSize, block.y * blockSize, blockSize, blockSize);
+					context.fillStyle = block.color;
+					context.fill();
+				}else{
+					console.log("tried to color:", x, y, color);
+				}
+			}
+			
+			//Creates block object, sets the canvas color, adds to array
+			//Call when info received from server
+			function createBlock(x, y, color){
+				var block = new Block(x,y,color);
 
-            context.beginPath()
-            context.rect(0, 10, 10, 20);
-            context.fillStyle = 'red';
-            context.fill();
+				setBlock(block);
+				moving.push(block);
+			}
+			
+			//removes a block at pos from moving array
+			function doneMoving(pos){
+				moving.splice(pos, 1);
+			}
+			
+			//do be run on every tick
+			//loops through moving array, moves blocks, does physics, er-thang
+			function update(){
+			
+			}
+			
+            createBlock(0,0,'yellow');
+			createBlock(0,1,'red');
+			createBlock(1,0,'blue');
+			createBlock(1,1,'green');
+			
         </script>
     </body>
 </html>
