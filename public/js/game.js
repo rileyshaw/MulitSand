@@ -126,4 +126,5 @@ createBlock(0,1,'red');
 createBlock(1,0,'blue');
 createBlock(1,1,'green');
 createBlock(2,1,'orange');
-//update();
+
+setInterval(update, 20);
