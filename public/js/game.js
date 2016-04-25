@@ -88,7 +88,7 @@ function move(dx, dy, block){
 //do be run on every tick
 //loops through moving array, moves blocks, does physics, er-thang
 function update(){
-	for (i = 0; i < moving.length; i++) {
+	for (i = 0; i < moving.length && i >= 0; i++) {
 		var block = moving[i];
 		if(doesExist(block.x, block.y+1)){
 			//logic
@@ -121,10 +121,28 @@ function update(){
 	}
 }
 
-//createBlock(0,0,'yellow');
-createBlock(0,1,'red');
-createBlock(1,0,'blue');
-createBlock(1,1,'green');
-createBlock(2,1,'orange');
+var isMouseDown = false;
+var drawColor = 'red';
+canvas.addEventListener('mousedown', mouseDown);
+canvas.addEventListener('mouseup', mouseUp);
+canvas.addEventListener('mouseout', mouseUp);
+function mouseDown(evt) {
+	isMouseDown = true;
+}
+function mouseUp(evt) {
+	isMouseDown = false;
+}
+
+canvas.addEventListener('mousemove', function(evt) {
+	if (isMouseDown) {
+		var rect = canvas.getBoundingClientRect();
+		var x = ~~((evt.pageX - rect.left)/blockSize);
+		var y =  ~~((evt.pageY - rect.top)/blockSize);
+		if (!doesExist(x, y)) {
+			createBlock(x, y, drawColor);
+			//	TODO Notify	
+		}
+	}
+}, false);
 
 setInterval(update, 20);
