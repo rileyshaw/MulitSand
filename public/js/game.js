@@ -1,6 +1,6 @@
 var canvas = document.getElementById('playArea');
 var context = canvas.getContext('2d');
-var blockSize = 5;
+var blockSize = 8;
 var moving = new Array();//what blocks are moving
 var backgroundCompare = '#ffffffff';//white
 var background = 'white';
@@ -160,9 +160,35 @@ function drop() {
 		var y =  ~~((mpos.pageY - rect.top)/blockSize);
 		if (!doesExist(x, y)) {
 			createBlock(x, y, drawColor);
-			//	TODO Notify	
+			socket.emit('blockspawn', {
+				x: x,
+				y: y,
+				color: drawColor
+			});
 		}
 	}
 }
 
 setInterval(update, 20);
+
+socket.on('requestworld', function() {
+	socket.emit('world', {
+		roomId: room,
+		worldData: canvas.toDataURL(),
+		motion: moving
+	});
+});
+
+socket.on('worlddata', function(param) {
+	var img = new Image;
+	img.addEventListener("load", function() {
+		context.drawImage(img, 0, 0);
+		moving = param.motion;
+	});
+	img.src = param.worldData;
+
+});
+
+socket.on('blockcreate', function(param) {
+	createBlock(param.x, param.y, param.color);
+});

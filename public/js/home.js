@@ -4,6 +4,8 @@ $(window).on('beforeunload', function(){
     socket.close();
 });
 
+var room = '';
+
 socket.on('createroom', function(param) {
 	console.log("Created room " + param.roomId);
 	history.pushState({}, 'MultiSand', 'room/' + param.roomId);
@@ -11,6 +13,7 @@ socket.on('createroom', function(param) {
 
 socket.on('joinroom', function(param) {
 	console.log("Joined room " + param.roomId);
+	room = param.roomId;
 	showPlayArea();
 });
 
