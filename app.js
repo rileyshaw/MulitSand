@@ -23,9 +23,22 @@ var lessMiddleware = require('less-middleware');
 //listen for a 'broadcast_action' for a new action from another client
 //listen for a 'broadcast_update' for a server version of the room state
 
+var port = (process.env.VCAP_APP_PORT || 1337);
 
 var redis = require('redis');
-var redisclient = redis.createClient();
+var credentials;
+var redisclient;
+if (process.env.VCAP_SERVICES) {
+    var env = JSON.parse(process.env.VCAP_SERVICES);
+    credentials = env['redis-2.6'][0]['credentials'];
+    redisclient = redis.createClient(credentials.port, credentials.host);
+    if (credentials.password !- '') {
+        client.auth(credentials.password);
+    }
+} else {
+    redisclient = redis.createClient();
+}
+
 var uuid = require('node-uuid');
 
 app.set('view engine', 'ejs');
@@ -60,8 +73,8 @@ function initRoom(roomID){
     //initialze redis information for the room
 }
 
-var server = app.listen(3000, function () {
-    console.log('Example app listening on port 3000!'  );
+var server = app.listen(port, function () {
+    console.log('Listening on port ' + port);
 });
 
 io.listen(server);
