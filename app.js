@@ -75,6 +75,15 @@ io.sockets.on('connection', function(socket) {
         socket.join(roomid);
         console.log('Joined room ' + roomid);
         socket.emit('joinroom', {roomId: roomid});
+        var clients = io.sockets.adapter.rooms[roomid].sockets;   
+
+        //to get the number of clients
+        var numClients = (typeof clients !== 'undefined') ? Object.keys(clients).length : 0;
+        for (var clientId in clients ) {
+            var clientSocket = io.sockets.connected[clientId];
+            clientSocket.emit('requestworld');
+            break;  //  We only want one client to send us their world
+        }
     });
 
     //request to create a new room
@@ -114,4 +123,12 @@ io.sockets.on('connection', function(socket) {
         });
     });
 
+    socket.on('world', function(param) {
+        console.log('Received data for ' + param.roomId);
+        socket.broadcast.emit('worlddata', param);
+    });
+
+    socket.on('blockspawn', function(param) {
+        socket.broadcast.emit('blockcreate', param);
+    });
 });
