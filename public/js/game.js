@@ -22,12 +22,20 @@ function rgbToHex(r, g, b, a) {
 //	x: x position (int)
 //	y: y position (int)
 //	color: color of block
-class Block{
-	constructor(x, y, color){
-		this.x = x;
-		this.y = y;
-		this.color = color;
-	}
+// class Block{
+// 	constructor(x, y, color){
+// 		this.x = x;
+// 		this.y = y;
+// 		this.color = color;
+// 	}
+// }
+
+function consblock(x, y, color) {
+	return {
+		x: x,
+		y: y,
+		color: color
+	};
 }
 
 
@@ -62,7 +70,7 @@ function doesExist(x,y){
 //Creates block object, sets the canvas color, adds to array
 //Call when info received from server
 function createBlock(x, y, color){
-	var block = new Block(x,y,color);
+	var block = consblock(x,y,color);
 	setBlock(block);
 	moving.push(block);
 }
@@ -88,6 +96,7 @@ function move(dx, dy, block){
 //do be run on every tick
 //loops through moving array, moves blocks, does physics, er-thang
 function update(){
+	drop();
 	for (i = 0; i < moving.length && i >= 0; i++) {
 		var block = moving[i];
 		if(doesExist(block.x, block.y+1)){
@@ -123,26 +132,37 @@ function update(){
 
 var isMouseDown = false;
 var drawColor = 'red';
+var mpos;
+$("#playArea").mousedown(function(event){
+    event.preventDefault();
+});
 canvas.addEventListener('mousedown', mouseDown);
 canvas.addEventListener('mouseup', mouseUp);
 canvas.addEventListener('mouseout', mouseUp);
 function mouseDown(evt) {
+	mpos = evt;
 	isMouseDown = true;
 }
 function mouseUp(evt) {
+	mpos = evt;
 	isMouseDown = false;
 }
+canvas.onselectstart = function () { return false; }
 
 canvas.addEventListener('mousemove', function(evt) {
+	mpos = evt;
+}, false);
+
+function drop() {
 	if (isMouseDown) {
 		var rect = canvas.getBoundingClientRect();
-		var x = ~~((evt.pageX - rect.left)/blockSize);
-		var y =  ~~((evt.pageY - rect.top)/blockSize);
+		var x = ~~((mpos.pageX - rect.left)/blockSize);
+		var y =  ~~((mpos.pageY - rect.top)/blockSize);
 		if (!doesExist(x, y)) {
 			createBlock(x, y, drawColor);
 			//	TODO Notify	
 		}
 	}
-}, false);
+}
 
 setInterval(update, 20);
