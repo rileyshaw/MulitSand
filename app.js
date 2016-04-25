@@ -41,6 +41,7 @@ if (process.env.VCAP_SERVICES) {
 
 var uuid = require('node-uuid');
 
+
 app.set('view engine', 'ejs');
 
 app.set('views', __dirname + '/public');
@@ -61,6 +62,13 @@ app.get('/room/:roomId', function(req, res) {
     res.render('index');
 });
 
+
+var adj = ["Adorable","Alluring","Green","Red","Yellow","Hairy","Wild","Eager","Energetic","Brave",
+"Clumsy","Black","Ambitious","Jolly","Witty","Grumpy","Sad","Unhappy","Bright","Orange"];
+
+var obj = ["Elephant","Alligator","Antelope","Baboon","Beaver","Bison","Bear","Buffalo","Camel","Cobra","Dog",
+"Iguana","Coyote","Horse","Lemur","Zebra","Yak","Wolverine","Leopard","Tiger","Turtle"];
+
 function getNewRoom(){
     //need to return the starting state of a room
     return 0;
@@ -73,22 +81,91 @@ function initRoom(roomID){
     //initialze redis information for the room
 }
 
-var server = app.listen(port, function () {
-    console.log('Listening on port ' + port);
+function Message(message,user) {
+    this.message = message;
+    this.user = user;
+}
+
+
+
+var server = app.listen(3000, function () {
+    console.log('Example app listening on port 3000!'  );
+});
+
+redisclient.on('connect', function() {
+    console.log('connected to redis');
 });
 
 io.listen(server);
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
 
 io.sockets.on('connection', function(socket) {
     console.log("Connected");
 
     //request to join a room
     socket.on('join', function(param) {
+        var rand1 = getRandomInt(0,adj.length);
+        name = adj[rand1];
+        rand1 = getRandomInt(0,obj.length);
+        name = name + obj[rand1];
         var roomid = param.roomId;
         socket.join(roomid);
         console.log('Joined room ' + roomid);
-        socket.emit('joinroom', {roomId: roomid});
+        socket.emit('joinroom', {roomId: roomid, username: name});
         var clients = io.sockets.adapter.rooms[roomid].sockets;   
+
+
+
+
+
+       redisclient.get(roomid, function(err, reply) {
+                console.log(reply);
+                var messages;
+                if (reply == null){
+                    console.log("empty");
+                    return;
+                }else{
+                    var messages = JSON.parse(reply);
+                }
+
+                 io.in(roomid).emit('updated_messages', {messagelist: messages});
+            });
+
+
+
+
+        socket.to(roomid).on('message', function(msg,user) {
+            redisclient.get(roomid, function(err, reply) {
+                console.log(reply);
+                var messages;
+                if (reply == null){
+                    console.log("empty");
+                    var messages = new Array();
+                }else{
+                    var messages = JSON.parse(reply);
+                }
+                var message = {msg:msg , user:user};
+                console.log("added");
+                messages.push(message);
+
+                var string = JSON.stringify(messages);
+                 redisclient.set(roomid,string);
+
+                 io.in(roomid).emit('updated_messages', {messagelist: messages});
+            });
+        });
+
+        socket.to(roomid).on('world', function(param) {
+            socket.broadcast.to(roomid).emit('worlddata', param);
+        });
+
+        socket.to(roomid).on('blockspawn', function(param) {
+            socket.broadcast.to(roomid).emit('blockcreate', param);
+        });
 
         //to get the number of clients
         var numClients = (typeof clients !== 'undefined') ? Object.keys(clients).length : 0;
@@ -102,46 +179,13 @@ io.sockets.on('connection', function(socket) {
     //request to create a new room
     socket.on('create', function() {
         console.log('creating room...');
-        var roomid = uuid.v4();
-        initRoom(roomid); 
-        socket.join(roomid);
-        console.log('Created room ' + roomid);
-        socket.emit('createroom', {roomId: roomid});
-        socket.emit('joinroom', {roomId: roomid});
+        var roomId = uuid.v4();
+        initRoom(roomId); 
+        socket.join(roomId);
+        console.log('Created room ' + roomId);
+        socket.emit('createroom', {roomId: roomId});
+       // socket.emit('joinroom', {roomId: roomId});
     });
 
     //request to send a message to the room
-    socket.on('message', function(msg,user) {
-        socket.get('room', function(err, room) {
-            if (err) {
-                socket.emit('error', err);
-            } else if (room) {
-                socket.broadcast.to(room).emit('broadcast_message', msg,user);
-            } else {
-                socket.emit('error', 'no room');
-            }
-        });
-    });
-
-    //request to update a room state 
-    socket.on('new_action', function(msg,user) {
-        socket.get('channel', function(err, room) {
-            if (err) {
-                socket.emit('error', err);
-            } else if (room) {
-                socket.broadcast.to(room).emit('broadcast', msg,user);
-            } else {
-                socket.emit('error', 'no room');
-            }
-        });
-    });
-
-    socket.on('world', function(param) {
-        console.log('Received data for ' + param.roomId);
-        socket.broadcast.emit('worlddata', param);
-    });
-
-    socket.on('blockspawn', function(param) {
-        socket.broadcast.emit('blockcreate', param);
-    });
 });
