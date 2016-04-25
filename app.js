@@ -33,7 +33,7 @@ if (process.env.VCAP_SERVICES) {
     credentials = env['redis-2.6'][0]['credentials'];
     redisclient = redis.createClient(credentials.port, credentials.host);
     if (credentials.password != '') {
-        client.auth(credentials.password);
+        redisclient.auth(credentials.password);
     }
 } else {
     redisclient = redis.createClient();
