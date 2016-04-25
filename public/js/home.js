@@ -5,32 +5,16 @@ $(window).on('beforeunload', function(){
 });
 
 var room = '';
-var name = '';
+
 socket.on('createroom', function(param) {
 	console.log("Created room " + param.roomId);
 	history.pushState({}, 'MultiSand', 'room/' + param.roomId);
-	socket.emit('join', {roomId: param.roomId});
-
 });
 
 socket.on('joinroom', function(param) {
 	console.log("Joined room " + param.roomId);
-	name = param.username;
 	room = param.roomId;
 	showPlayArea();
-});
-
-socket.on('updated_messages', function(param) {
-	console.log("Messages:" + param.messagelist);
-	$('#chatlist').html($('<li>').text(""));
-	for(message in param.messagelist){
-
-		console.log(param.messagelist[message].msg);
- 		$('#chatlist').append($('<li>').text(param.messagelist[message].user + ": " + param.messagelist[message].msg));
-	}
-	var objDiv = document.getElementById("chatlist");
-	objDiv.scrollTop = objDiv.scrollHeight;
-
 });
 
 var index = window.location.href.indexOf('/room/');
@@ -56,7 +40,7 @@ function showPlayArea() {
 }
 
 $('#chat').submit(function(){
-	socket.emit('message', $('#m').val(),name);
+	socket.emit('chat_msg', $('#m').val());
 	$('#m').val('');
 	return false;
 });
