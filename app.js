@@ -88,8 +88,8 @@ function Message(message,user) {
 
 
 
-var server = app.listen(3000, function () {
-    console.log('Example app listening on port 3000!'  );
+var server = app.listen(port, function () {
+    console.log('Example app listening on port ' + port  );
 });
 
 redisclient.on('connect', function() {
