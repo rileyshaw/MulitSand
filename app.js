@@ -32,7 +32,7 @@ if (process.env.VCAP_SERVICES) {
     var env = JSON.parse(process.env.VCAP_SERVICES);
     credentials = env['redis-2.6'][0]['credentials'];
     redisclient = redis.createClient(credentials.port, credentials.host);
-    if (credentials.password !- '') {
+    if (credentials.password != '') {
         client.auth(credentials.password);
     }
 } else {
