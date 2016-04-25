@@ -53,6 +53,15 @@ function showPlayArea() {
 	s.type = "text/javascript";
 	s.src = "/js/game.js";
 	$("body").append(s);
+	$("#flat").spectrum({
+	    flat: true,
+	    showInput: false,
+	    clickoutFiresChange: true,
+	    change: function(val) {
+	    	drawColor = val.toHexString();
+	    }
+	});
+	$("#flat").spectrum("set", "red");
 }
 
 $('#chat').submit(function(){
@@ -60,3 +69,4 @@ $('#chat').submit(function(){
 	$('#m').val('');
 	return false;
 });
+
