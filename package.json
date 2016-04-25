@@ -1,13 +1,13 @@
 {
-  "name": "MultiSand",
-  "dependencies": {
-  },
- "private": true,
+  "name": "multisand",
+  "version": "1.0.0",
+  "description": "Untapped sand potential",
+  "private": true,
   "scripts": {
     "start": "node app.js"
   },
-  "devDependencies": {
-     "cfenv": "^1.0.3",
+  "dependencies": {
+    "cfenv": "^1.0.3",
     "ejs": "^2.4.1",
     "express": "^4.13.4",
     "less-middleware": "^0.1.15",
@@ -15,7 +15,8 @@
     "redis": "^2.5.3",
     "socket.io": "^1.4.5"
   },
-"engines": {
+  "repository": {},
+  "engines": {
     "node": "4.2.x"
   }
 }
