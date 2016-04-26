@@ -137,7 +137,6 @@ io.sockets.on('connection', function(socket) {
 
 
 
-
         socket.to(roomid).on('message', function(msg,user) {
             redisclient.get(roomid, function(err, reply) {
                 console.log(reply);
@@ -174,6 +173,9 @@ io.sockets.on('connection', function(socket) {
             clientSocket.emit('requestworld');
             break;  //  We only want one client to send us their world
         }
+
+
+
     });
 
     //request to create a new room

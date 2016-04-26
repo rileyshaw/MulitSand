@@ -18,6 +18,7 @@ socket.on('joinroom', function(param) {
 	name = param.username;
 	room = param.roomId;
 	showPlayArea();
+	socket.emit('message', "Joined the room",name);
 });
 
 socket.on('updated_messages', function(param) {
